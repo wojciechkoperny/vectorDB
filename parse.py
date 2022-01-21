@@ -3,6 +3,7 @@ from pprint import pprint
 import xlsxwriter
 
 
+
 db = cantools.database.load_file('C2_Body.dbc')
 workbook = xlsxwriter.Workbook('C2_Body.xlsx')
 #print(type(db.buses))
@@ -43,11 +44,21 @@ worksheetMessages.write(row,col+2,"SENER")
 worksheetMessages.write(row,col+3,"SEND TYPE")
 worksheetMessages.write(row,col+4,"CYCLE")
 worksheetMessages.write(row,col+5,"MESSAGE LENGTH")
+worksheetMessages.write(row,col+6,"SIGNAL NAME")
+worksheetMessages.write(row,col+7,"SIGNAL START BIT")
+worksheetMessages.write(row,col+8,"SIGNAL LENGTH")
+worksheetMessages.write(row,col+9,"SIGNAL MAX")
+worksheetMessages.write(row,col+10,"SIGNAL MIN")
+worksheetMessages.write(row,col+11,"SIGNAL OFFSER")
+worksheetMessages.write(row,col+12,"SIGNAL SCALE")
+worksheetMessages.write(row,col+13,"SIGNAL UNIT")
+worksheetMessages.write(row,col+14,"SIGNAL RECEIVER")
+
+
 
 row=1
 for message in db.messages:
     for signal in message.signals:
-        
         worksheetMessages.write(row,col,message.name)
         col+=1
         worksheetMessages.write_formula(row,col,'="0x"&DEC2HEX('+str(message.frame_id)+')')
@@ -58,9 +69,28 @@ for message in db.messages:
         col+=1
         worksheetMessages.write(row,col,message.cycle_time)
         col+=1
+        #worksheetMessages.write_formula((row,col,'='+str(message.length)))
         worksheetMessages.write(row,col,message.length)
         col+=1
         worksheetMessages.write(row,col,signal.name)
+        col+=1
+        worksheetMessages.write(row,col,signal.start)
+        col+=1
+        worksheetMessages.write(row,col,signal.length)
+        col+=1
+        worksheetMessages.write(row,col,signal.maximum)
+        col+=1
+        worksheetMessages.write(row,col,signal.minimum)
+        col+=1
+        worksheetMessages.write(row,col,signal.offset)
+        col+=1
+        worksheetMessages.write(row,col,signal.scale)
+        col+=1
+        worksheetMessages.write(row,col,signal.unit)
+        col+=1
+        worksheetMessages.write(row,col,str(signal.receivers))
+        col+=1
+
         col=0
         row+=1
    #worksheetMessages.write()

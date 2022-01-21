@@ -2,9 +2,13 @@ import cantools
 from pprint import pprint
 import xlsxwriter
 
+db
+
+def parseVectorDB():
+
+    db = cantools.database.load_file('C2_Body.dbc')
 
 
-db = cantools.database.load_file('C2_Body.dbc')
 workbook = xlsxwriter.Workbook('C2_Body.xlsx')
 #print(type(db.buses))
 #for bus in range(len(db.buses)):
@@ -101,3 +105,10 @@ example_message = db.get_message_by_name('SWCU_REQ')
 print("finish")
 
 workbook.close()
+
+
+if __name__ == '__main__':
+    try:
+        parseVectorDB()
+    except:
+        print("cos poszlo nie tak")

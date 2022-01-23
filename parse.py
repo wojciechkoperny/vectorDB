@@ -14,7 +14,8 @@ def parseVectorDB(path):
         else:
             raise ValueError
     except ValueError:
-        print('ERROR: dbc under path not found - please provide proper proper dbc file as imput parameter')
+        print('dbc under path not found - please provide proper proper dbc file as imput parameter')
+        sys.exit(1)
 
 def prepareWorkbook():
 
@@ -22,6 +23,13 @@ def prepareWorkbook():
         workbook = xlsxwriter.Workbook('C2_Body.xlsx')
     except xlsxwriter.exceptions.XlsxFileError:
         print('please close output workbook before running a script')
+        sys.exit(1)
+
+    header_format = workbook.add_format({'bold': True,
+                                     'align': 'center',
+                                     'valign': 'vcenter',
+                                     'fg_color': '#D7E4BC',
+                                     'border': 1})
  
     worksheetMessages = workbook.add_worksheet("Messages")
     worksheetNodes = workbook.add_worksheet("Nodes")
@@ -42,22 +50,24 @@ def prepareWorkbook():
     row = 0
     col = 0
 
-    worksheetMessages.write(row, col ,"MESSAGE")
-    worksheetMessages.write(row,col+1,"MESSAGE ID")
-    worksheetMessages.write(row,col+2,"SENER")
-    worksheetMessages.write(row,col+3,"SEND TYPE")
-    worksheetMessages.write(row,col+4,"CYCLE")
-    worksheetMessages.write(row,col+5,"MESSAGE LENGTH")
-    worksheetMessages.write(row,col+6,"SIGNAL NAME")
-    worksheetMessages.write(row,col+7,"SIGNAL START BIT")
-    worksheetMessages.write(row,col+8,"SIGNAL LENGTH")
-    worksheetMessages.write(row,col+9,"SIGNAL MAX")
-    worksheetMessages.write(row,col+10,"SIGNAL MIN")
-    worksheetMessages.write(row,col+11,"SIGNAL OFFSER")
-    worksheetMessages.write(row,col+12,"SIGNAL SCALE")
-    worksheetMessages.write(row,col+13,"SIGNAL UNIT")
-    worksheetMessages.write(row,col+14,"SIGNAL RECEIVER")
+    worksheetMessages.write(row, col ,"MESSAGE",header_format)
+    worksheetMessages.write(row,col+1,"MESSAGE ID",header_format)
+    worksheetMessages.write(row,col+2,"SENER",header_format)
+    worksheetMessages.write(row,col+3,"SEND TYPE",header_format)
+    worksheetMessages.write(row,col+4,"CYCLE",header_format)
+    worksheetMessages.write(row,col+5,"MESSAGE LENGTH",header_format)
+    worksheetMessages.write(row,col+6,"SIGNAL NAME",header_format)
+    worksheetMessages.write(row,col+7,"SIGNAL START BIT",header_format)
+    worksheetMessages.write(row,col+8,"SIGNAL LENGTH",header_format)
+    worksheetMessages.write(row,col+9,"SIGNAL MAX",header_format)
+    worksheetMessages.write(row,col+10,"SIGNAL MIN",header_format)
+    worksheetMessages.write(row,col+11,"SIGNAL OFFSER",header_format)
+    worksheetMessages.write(row,col+12,"SIGNAL SCALE",header_format)
+    worksheetMessages.write(row,col+13,"SIGNAL UNIT",header_format)
+    worksheetMessages.write(row,col+14,"SIGNAL RECEIVER",header_format)
     row=1
+
+    worksheetMessages.freeze_panes(1, 0)
 
     for message in db.messages:
         for signal in message.signals:
@@ -81,6 +91,8 @@ def prepareWorkbook():
         workbook.close()
     except xlsxwriter.exceptions.XlsxFileError:
         print('please close output workbook before running a script')
+        sys.exit(1)
+    
 
 
 if __name__ == '__main__':
@@ -89,5 +101,11 @@ if __name__ == '__main__':
         parseVectorDB(sys.argv[1])
         prepareWorkbook()
         print('Communication matrix was succesfully generated!')
+    
+    except IndexError:
+        print('Please provide path to dbc file as imput argument')
+        sys.exit(1)
     except Exception as e:
         print('General error: ' + str(e) + '.\nShutting down.')
+        sys.exit(1)
+    

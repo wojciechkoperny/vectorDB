@@ -8,11 +8,12 @@ install python3
 
 isntall cantools from pip
 
->python3 -m pip install cantools
-
-or 
-
 >python -m pip install cantools
+
+and xlswriter
+
+>pip install XlsxWriter
+
 
 and run script 
 
